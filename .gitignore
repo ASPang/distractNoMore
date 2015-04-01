@@ -1,0 +1,9 @@
+.settings
+.project
+.buildpath
+manifest.mf
+build.xml
+/dist/
+/nbproject/
+/nbproject/private/
+/test/

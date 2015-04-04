@@ -11,31 +11,42 @@ package distract;
 
 /*Import drawing libraries*/
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import javax.swing.Timer;
+//import javax.swing.*;
+
+/*IO Stream*/
 
 
 /**
  *
  * @author Angela
  */
-public class Animate {
+public class Animate extends Component implements ActionListener {
     private HashMap imageMap;  //Stores all the image names as the key
-    private Image[] img;   //List of images
+    //private Image[] img;   //List of images
     private Image[] expression;    //List of all the image expressions
     
     private String activeImg;  //Name of the current active image
-    
-    private int ptr;    //Current image 
+    private BufferedImage img;
+
+    private int curImgNum = 1;    //Current image 
     private int show = 1;   //Default to show the image   
     private int disable = 0;    //Default to allow image to be interactive
-    private int move = 1;   //Default to have the animation
+    private int move = 1;   //Default to have the animation move
     private int state = 0;  //Default state to be 0
     
     private int xPos, yPos; //Image location
     private int dx, dy; //Image movement direction
+    
+    private int animationSpeed = 100; //speed of the image rotation in milliseconds
+    private Timer timer;    //This object will pause the class for 5 seconds
     
     /**
      * Class construct that will set all global variables to default values
@@ -80,6 +91,77 @@ public class Animate {
          
         /*Go through all images in the directory*/
         searchDir();
+                
+        /*Start the animation*/
+        timer = new Timer(animationSpeed, this);
+        timer.start();       
+    }
+        
+    /**
+     * Override action event class method so the following image will be set.
+     * 
+     * @param event Action Even that is played 
+     */
+    public void actionPerformed(ActionEvent event) {
+        try {
+            String path = System.getProperty("user.dir") + "\\src\\distract\\img\\enemy" + curImgNum + ".png";
+            File file = new File(path);
+            img = ImageIO.read(file);
+            System.out.println(path);
+             /*path = System.getProperty("user.dir") + "\\src\\distract\\img\\enemy3.png";
+             file = new File(path);
+            img = ImageIO.read(file);*/
+            
+            //System.out.println(activeImg + " " + curImgNum + " " + imageMap.get(activeImg));
+            /*Increment to the next image*/
+            nextImage();
+            
+            repaint();
+            //System.out.println(activeImg + " " + curImgNum + " " + imageMap.get(activeImg));
+        } catch (IOException error) {        }
+    }
+    
+    /**
+     * Determine the next image number in the sequence.
+     */
+    private void nextImage() {
+        /*Get the last number in the image sequence*/
+        int lastImg;
+        lastImg = (int)imageMap.get(activeImg);
+        
+        if (curImgNum + 1 > lastImg) {
+            curImgNum = 1;
+        }
+        else {
+            curImgNum += 1;
+        }
+    }
+    
+    
+    /**
+     * Override original class method of drawing to the window frame
+     * 
+     * @param graphic   Image being drawn the window frame 
+     */
+    public void paint(Graphics graphic) {
+        //super.paint(graphic);
+        graphic.drawImage(img, 0, 0, null);
+        
+        /*Graphics2D screen2D = (Graphics2D) graphic;
+        screen2D.drawImage(img, 0, 0, this);*/
+    }
+    
+    /**
+     * Override original class method so window size to be the same as the image size
+     * 
+     * @return Dimension   Object that contains the width and the height of the image
+     */
+    public Dimension getPreferredSize() {
+        if (img == null) {
+             return new Dimension(100,100);
+        } else {
+           return new Dimension(img.getWidth(null), img.getHeight(null));
+       }
     }
     
     /**
@@ -235,7 +317,25 @@ public class Animate {
     }
             
     
-    /*** Updates animation status ***/    
+    /*** Updates animation status ***/  
+    /**
+     * Set the current image animation
+     * 
+     * @param img   Name of the image that the program is to displayed.
+     */
+    public void setImage(String img) {
+        activeImg = img;
+    }
+    
+    /**
+     * Update the animation speed in millisecond.
+     * 
+     * @param speed Speed of the animation for the program
+     */
+    public void setAnimationSpeed(int speed) {
+        animationSpeed = speed;
+    }
+    
     /**
      * Hide the animation
      */
@@ -262,6 +362,7 @@ public class Animate {
      */
     public void stop() {
         this.move = 0;
+        timer.stop();
     }
     
     /**

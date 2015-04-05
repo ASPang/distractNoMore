@@ -1,6 +1,7 @@
-/*
+/**
  * Project: Distract No More
- * Coder: Angela Pang
+ * @FileName: Animate.java
+ * @author: Angela Pang
  *
  * Date Created: 2015/04/01
  * Date Modified: 2015/04/01
@@ -14,15 +15,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import javax.imageio.ImageIO;
 import javax.swing.Timer;
-//import javax.swing.*;
+//import javax.swing.JPanel;
 
 /*IO Stream*/
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
+/*Data storage*/
+import java.util.HashMap;
 
 /**
  *
@@ -107,17 +109,10 @@ public class Animate extends Component implements ActionListener {
             String path = System.getProperty("user.dir") + "\\src\\distract\\img\\enemy" + curImgNum + ".png";
             File file = new File(path);
             img = ImageIO.read(file);
-            System.out.println(path);
-             /*path = System.getProperty("user.dir") + "\\src\\distract\\img\\enemy3.png";
-             file = new File(path);
-            img = ImageIO.read(file);*/
             
-            //System.out.println(activeImg + " " + curImgNum + " " + imageMap.get(activeImg));
             /*Increment to the next image*/
             nextImage();
-            
             repaint();
-            //System.out.println(activeImg + " " + curImgNum + " " + imageMap.get(activeImg));
         } catch (IOException error) {        }
     }
     
@@ -144,11 +139,7 @@ public class Animate extends Component implements ActionListener {
      * @param graphic   Image being drawn the window frame 
      */
     public void paint(Graphics graphic) {
-        //super.paint(graphic);
         graphic.drawImage(img, 0, 0, null);
-        
-        /*Graphics2D screen2D = (Graphics2D) graphic;
-        screen2D.drawImage(img, 0, 0, this);*/
     }
     
     /**
@@ -179,16 +170,13 @@ public class Animate extends Component implements ActionListener {
         
         /*Go through every file in the folder*/
         for (int i = 0; i < listOfFiles.length; i++) {
-          if (listOfFiles[i].isFile()) {
-            System.out.println("File " + listOfFiles[i].getName());
-            
+          if (listOfFiles[i].isFile()) {            
             /*Parse the file name*/
             imgName = parseImgName(listOfFiles[i].getName());
             
             /*Determine if the file name is the same as previous*/
             if (imgName.equals(oldImage)) {
                 countImg += 1;
-                System.out.println(countImg);
             }
             else {
                 /*Store the oldImage name*/
@@ -196,10 +184,8 @@ public class Animate extends Component implements ActionListener {
                     storeImage(oldImage, countImg);  
                 }
                 
-                oldImage = imgName;
-                countImg = 1;
-                    
-                System.out.println("NEW " + countImg + " " +  i + " " + listOfFiles.length);
+                oldImage = imgName; //Save old image name 
+                countImg = 1;   //Reset image count
             }
           }
         }
@@ -208,8 +194,6 @@ public class Animate extends Component implements ActionListener {
         if (!oldImage.equals("") || countImg != 0) {
               storeImage(oldImage, countImg);
           }
-        
-        System.out.println(imageMap);   //TESTING!!!!!!!!!!!!! - SEEING IF ALL THE VALUES STORED
     }
     
     /**
@@ -228,8 +212,6 @@ public class Animate extends Component implements ActionListener {
         
         /*Remove number at end of image name*/
         imgName = removeFileNum(imgName);
-        
-        System.out.println(imgName);
         
         return imgName;
     }
@@ -259,21 +241,6 @@ public class Animate extends Component implements ActionListener {
         
         return imgName;
     }
-    
-    /**
-     * Get all the images in the image folder
-     *
-    private void getImages() {        
-        String path = System.getProperty("user.dir") + "\\test\\greenCat2.png";
-        File file = new File(path);
-        
-        try {
-            this.img[0] = ImageIO.read(file);
-        } catch (IOException e) {
-            System.out.println("ERROR Loading image " + path);
-            System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        }
-    }*/
     
     /**
      * Store all the images into a hash map where the key is the filename

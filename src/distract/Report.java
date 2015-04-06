@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+//import java.lang.management.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,8 +28,9 @@ import javax.swing.Timer;
 public class Report implements ActionListener {
     private Timer timer;
     
-    private int updateSpeed = 10000;
-    private int upTime = 0; //Total run time of the program
+    private int updateSpeed = 1000;
+    private long startTime;    //Start time of when the program was launched
+    //private long upTime = 0; //Total run time of the program in seconds
     
     private File reportFile;
     
@@ -51,6 +53,7 @@ public class Report implements ActionListener {
         checkFileExist();
         
         /*Record system uptime*/
+        startTime = System.nanoTime();
         
         /*Update the program log file*/
         updateFile();
@@ -81,10 +84,11 @@ public class Report implements ActionListener {
             if(!file.exists()) {
                 /*Create file*/
                 file.createNewFile();
+                
+                openFile = new FileOutputStream(file, false);     //Open the file
+                openFile.close();  //Close the file
             } 
-
-            openFile = new FileOutputStream(file, false);     //Open the file
-            openFile.close();  //Close the file
+            
             return 1;   //Return true that file now exists
         }
         catch (IOException error) {
@@ -112,6 +116,8 @@ public class Report implements ActionListener {
         System.out.println(getOS());
         
         /*Determine the programs running*/
+        getRunTime();
+        
         /*Determine if any web browsers open*/
         /*Determine if any video players are open*/
     }
@@ -127,6 +133,8 @@ public class Report implements ActionListener {
     private void writeToFile(String timeStamp, String[] programs) {
         String fName = reportName;
         String path = System.getProperty("user.dir") + "\\src\\distract\\report\\" + fName; //Directory of the images
+        String line = "";
+        
         File file;
         FileWriter openFile;
         BufferedWriter writeBuf;
@@ -135,16 +143,18 @@ public class Report implements ActionListener {
         try {
             /*Determine if log file still exists*/
             if (checkFileExist() == 1) {
-                String data = timeStamp; 
+                line = timeStamp; 
+                line += "\n"; 
                 
                 file = new File(path);
                 openFile = new FileWriter(file, true); //true = append file
                 writeBuf = new BufferedWriter(openFile);
 
-                writeBuf.write(data);
+                writeBuf.write(line);
+                writeBuf.newLine();
                 writeBuf.close();
 
-                System.out.println("Done " + data);
+                System.out.println("Done " + line);
             } else {
                 System.out.println("ERROR - Could not create Distract Report File at: " + path);
             }
@@ -171,6 +181,26 @@ public class Report implements ActionListener {
     }
     
     /**
+     * Provides time of the program in seconds starting when the program
+     * was first launched.
+     * 
+     * @return runTime  Returns the total run time of the program
+     */
+    public long getRunTime() {
+        long curTime;
+        long runTime = 0;
+        long millisec = 1000000;
+        long seconds = 1000000000;
+        
+        curTime = System.nanoTime();
+        runTime = (curTime - startTime) / seconds;  //divide by 1000000 to get milliseconds.
+        
+        //System.out.println(runTime);  //TESTING!!!!!!!!!!!
+
+        return runTime;
+    }
+    
+    /**
      * Determine the OS that the program is running on. 
      * This will determine some of the expected programs that 
      * user might be running and key commands.
@@ -183,6 +213,17 @@ public class Report implements ActionListener {
         
         return osName;
     }
+    
+    /** Get JVM CPU time in milliseconds */
+    /*REF: http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking*/
+    /*
+    public long getJVMCpuTime( ) {
+        OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean( );
+        if ( ! (bean instanceof sun.com.management.OperatingSystemMXBean) )
+            return 0L;
+        
+        return ((sun.com.management.OperatingSystemMXBean)bean).getProcessCpuTime( );
+    }*/
     
     /**
      * Updates the program state file with new information

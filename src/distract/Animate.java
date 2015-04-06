@@ -6,6 +6,8 @@
  * Date Created: 2015/04/01
  * Date Modified: 2015/04/01
  *
+ * Description:
+ * 
  */
 
 package distract;
@@ -107,7 +109,7 @@ public class Animate extends Component implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         try {
-            String path = System.getProperty("user.dir") + "\\src\\distract\\img\\enemy" + curImgNum + ".png";
+            String path = System.getProperty("user.dir") + "\\src\\distract\\img\\" + activeImg + curImgNum + ".png";
             File file = new File(path);
             img = ImageIO.read(file);
             
@@ -256,37 +258,6 @@ public class Animate extends Component implements ActionListener {
         imageMap.put(imgName, num);
     }
     
-    /**
-     * Animates the image
-     *
-     * @return  1 if animation drawn and 0 if animation is not drawn
-     */
-    public int animate() {
-        /*Determine if the animation is set to play*/
-        if (this.move == 0 || this.disable == 1 || this.show == 0) {
-            return 0;   //Return 0 to statue false and animation wasn't played
-        }
-        
-        return 1;   //Return 1 to statue false and animation was played
-    }
-    
-    /**
-     * Draw the image to the window
-     */
-    public void draw() {
-    //public void draw(Graphics graphic) {
-        //g.drawImage(img, 0, 0, null);
-        //graphic.drawImg(this.img[0], 0, 0, null);
-    }    
-    
-    /**
-     * Update the image to the next sequence of the series
-     */
-    public void updateImage() {
-
-    }
-            
-    
     /*** Updates animation status ***/  
     /**
      * Set the current image animation
@@ -295,6 +266,10 @@ public class Animate extends Component implements ActionListener {
      */
     public void setImage(String img) {
         activeImg = img;
+        
+        if (!activeImg.equals(img)) {
+            curImgNum = 1;
+        }
     }
     
     /**
@@ -324,14 +299,13 @@ public class Animate extends Component implements ActionListener {
      * Start the image movement
      */
     public void start() {
-        this.move = 1;
+        timer.start();
     }
     
     /**
      * Stop the image movement
      */
     public void stop() {
-        this.move = 0;
         timer.stop();
     }
     

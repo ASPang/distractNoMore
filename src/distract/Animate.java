@@ -104,6 +104,7 @@ public class Animate extends Component implements ActionListener {
      * 
      * @param event Action Even that is played 
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         try {
             String path = System.getProperty("user.dir") + "\\src\\distract\\img\\enemy" + curImgNum + ".png";
@@ -138,6 +139,7 @@ public class Animate extends Component implements ActionListener {
      * 
      * @param graphic   Image being drawn the window frame 
      */
+    @Override
     public void paint(Graphics graphic) {
         graphic.drawImage(img, 0, 0, null);
     }
@@ -147,6 +149,7 @@ public class Animate extends Component implements ActionListener {
      * 
      * @return Dimension   Object that contains the width and the height of the image
      */
+    @Override
     public Dimension getPreferredSize() {
         if (img == null) {
              return new Dimension(100,100);

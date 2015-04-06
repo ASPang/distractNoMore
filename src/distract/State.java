@@ -24,17 +24,22 @@ public class State extends JFrame implements MouseListener, MouseMotionListener{
     private Point mDownCord;
     
     Animate animate;
+    Report report;
+    
     //Mouse mouse;
     /*
     Audio sound;
-    Report report;
     Computer device;    
     */
     
     JFrame f;
     
+    /*State value*/
+    private int stateVal = 0;   //Default State is 0
+    
     State() {
         animate = new Animate();
+        report = new Report();
         //mouse = new Mouse(f);
         //this.addMouseMotionListener();
     }
@@ -42,15 +47,14 @@ public class State extends JFrame implements MouseListener, MouseMotionListener{
     public void initialize(){
         /*Determine current state*/
         
+        
         /*Set current state*/
         setState();
         
         /*Create frame for the animation*/
-        //JFrame f = new JFrame("Load Image Sample");
-        f = new JFrame("");
+        f = new JFrame("Distract No More");
         
         /*Initializing Mouse events*/
-        //f.addMouseMotionListener((MouseMotionListener) this);
         f.addMouseListener(this);
         f.addMouseMotionListener(this);
         
@@ -69,8 +73,11 @@ public class State extends JFrame implements MouseListener, MouseMotionListener{
         f.add(animate);
         f.pack();
         f.setVisible(true);        
-    }
+    }   
     
+    /**
+     * 
+     */
     private void setState() {
         animate.setImage("enemy");
     }
@@ -91,17 +98,24 @@ public class State extends JFrame implements MouseListener, MouseMotionListener{
     }
     
     /**
+     * Saves the mouse current location on the screen when 
+     * the user holds down the button.
      * 
-     * @param evt 
+     * @param evt Mouse event object 
      */
     @Override
     public void mousePressed(MouseEvent evt) {
         mDownCord = evt.getPoint();
     }    
     
+    /**
+     * Sets the mouse coordinate to null when the button
+     * is not held down.
+     * 
+     * @param evt Mouse event object 
+     */
+    @Override
     public void mouseReleased(MouseEvent evt) {
-        Point cord = evt.getLocationOnScreen();
-        System.out.println((int)(cord.x - mDownCord.x) + " " + (int)(cord.y - mDownCord.y));
         mDownCord = null;
     }
 

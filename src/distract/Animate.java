@@ -62,9 +62,6 @@ public class Animate extends Component implements ActionListener {
         this.yPos = 0;
         this.dx = 0;
         this.dy = 0;
-        
-        /*Start the image animation*/
-        startAnimation();
     }
     
     /** 
@@ -81,15 +78,12 @@ public class Animate extends Component implements ActionListener {
         this.yPos = yPos;
         this.dx = dx;
         this.dy = dy;    
-        
-        /*Start the image animation*/
-        startAnimation();
     }
     
     /**
      * Start animation only called once by the constructor
      */
-    private void startAnimation() {
+    public void startAnimation() {
         /*Initialize hash map*/
         imageMap = new HashMap();
          

@@ -64,6 +64,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
                 
         /*Set current state*/
         setState();
+        animate.startAnimation();
         
         /*Set up JFrame that'll hold the character*/
         setAniFrame();     
@@ -114,12 +115,13 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
         System.out.println("Converted runtime " + runTime);
         /*Determine state based on run time*/
         if (runTime < 5.0) { //State of character is content
-            animate.setImage("character");
+            animate.setImage("circle");
+            animate.setAnimationSpeed(50);
             stateVal = 0;
         }
         else {  //State of the character is extreme anger and lock down
             /*Update Animation*/
-            animate.setImage("enemy");
+            animate.setImage("circle");
             
             /*Black out screen*/
             

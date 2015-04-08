@@ -282,7 +282,15 @@ public class Animate extends Component implements ActionListener {
      * @param speed Speed of the animation for the program
      */
     public void setAnimationSpeed(int speed) {
+        /*Save new animation speed*/
         animationSpeed = speed;
+        
+        /*Restart timer*/
+        if (timer != null) {
+            timer.stop();
+        }
+        timer = new Timer(animationSpeed, this);
+        timer.start();           
     }
     
     /**

@@ -89,6 +89,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
         /*Remove frame boarder and buttons*/
         aniFrame.setUndecorated(true);
         aniFrame.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+        aniFrame.setAlwaysOnTop( true );   // Set's the frame to always be on top
         
         /*Listens to when the program window is closed*/
         aniFrame.addWindowListener(new WindowAdapter(){
@@ -108,23 +109,37 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
      */
     private void setState() {
         float runTime;
-        //float min = 60;
-        float min = 1;  //TESTING!!!!!!!!!!!!!!
+        float min = 60;  //TESTING!!!!!!!!!!!!!!
         
         /*Determine run time and convert it to minutes*/
         runTime = (float)(report.getRunTime())/min;
-        //System.out.println("Converted runtime " + runTime);   //TESTING@!!!!
+        System.out.println("Converted runtime" + runTime);   //TESTING@!!!!
         /*Determine state based on run time*/
-        if (runTime < 5.0) { //State of character is content
+        if (runTime < 0.1) { //State of character is content
             animate.setImage("circle");
-            animate.setAnimationSpeed(50);
+            animate.setAnimationSpeed(100);
             stateVal = 0;
             curImg = "circle";
+        }
+        else if (runTime < 0.4) { //State of character is content
+            animate.setImage("sleep");
+            if(!curImg.equals("sleep")) {
+                animate.setAnimationSpeed(100000);
+            }
+            /*Set JFrame size to be proper*/
+            aniFrame.setSize(animate.getPreferredSize().width, animate.getPreferredSize().height);
+            
+            stateVal = 0;
+            curImg = "sleep";
         }
         else  {  //State of the character is extreme anger and lock down
             /*Update Animation*/
             animate.setImage("sitting");
-            animate.setAnimationSpeed(10);
+            if(!curImg.equals("sitting")) {
+                animate.setAnimationSpeed(1000);
+            }
+            
+            /*Set JFrame size to be proper*/
             aniFrame.setSize(animate.getPreferredSize().width, animate.getPreferredSize().height);
             /*Black out screen*/
             

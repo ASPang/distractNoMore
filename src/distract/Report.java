@@ -46,7 +46,7 @@ public class Report implements ActionListener {
     }
     
     /**
-     * 
+     * Start recording
      */
     public void startReport() {
         /*Determine if file exist*/
@@ -194,8 +194,6 @@ public class Report implements ActionListener {
         
         curTime = System.nanoTime();
         runTime = (curTime - startTime) / seconds;  //divide by 1000000 to get milliseconds.
-        
-        //System.out.println(runTime);  //TESTING!!!!!!!!!!!
 
         return runTime;
     }
@@ -213,17 +211,6 @@ public class Report implements ActionListener {
         
         return osName;
     }
-    
-    /** Get JVM CPU time in milliseconds */
-    /*REF: http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking*/
-    /*
-    public long getJVMCpuTime( ) {
-        OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean( );
-        if ( ! (bean instanceof sun.com.management.OperatingSystemMXBean) )
-            return 0L;
-        
-        return ((sun.com.management.OperatingSystemMXBean)bean).getProcessCpuTime( );
-    }*/
     
     /**
      * Updates the program state file with new information
@@ -244,5 +231,12 @@ public class Report implements ActionListener {
      */
     public void updateSpeed(int newTime) {
         updateSpeed = newTime;
+    }
+    
+    /**
+     * Reset the start time
+     */
+    public void resetStartTime() {
+        startTime = System.nanoTime();
     }
 }

@@ -106,7 +106,7 @@ public class Animate extends Component implements ActionListener {
         try {            
             File file = new File(path);
             img = ImageIO.read(file);
-            
+            //System.out.println("IMG = " + activeImg + curImgNum);
             /*Increment to the next image*/
             nextImage();
             repaint();
@@ -125,7 +125,12 @@ public class Animate extends Component implements ActionListener {
     private void nextImage() {
         /*Get the last number in the image sequence*/
         int lastImg;
-        lastImg = (int)imageMap.get(activeImg);
+        try {
+            lastImg = (int)imageMap.get(activeImg);
+        }
+        catch (NullPointerException error) {
+            lastImg = 0;
+        }
         
         if (curImgNum + 1 > lastImg) {
             curImgNum = 1;
@@ -143,9 +148,6 @@ public class Animate extends Component implements ActionListener {
      */
     @Override
     public void paint(Graphics graphic) {
-        //System.out.println("");        
-        //this.img.getRaster();
-        //super.paint(graphic);
         if (img != null) {
            graphic.drawImage(img, 0, 0, img.getWidth(null), img.getHeight(null), null);
         }

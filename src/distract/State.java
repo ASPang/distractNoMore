@@ -202,11 +202,11 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
         else if (runTime < 3.0) { //State of character is content
             animate.setImage("sleep");
             if(!curImg.equals("sleep")) {
-                animate.setAnimationSpeed(1);
+                animate.setAnimationSpeed(1000000);
             }
             /*Set JFrame size to be proper*/
             aniFrame.setSize(animate.getPreferredSize().width, animate.getPreferredSize().height);
-            aniFrame.setLocation(15,screenSize.height - 75);
+            aniFrame.setLocation(15,screenSize.height - 75 - animate.img.getHeight(null));
             
             stateVal = 2;
             curImg = "sleep";
@@ -223,7 +223,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
             stateVal = 4;
             curImg = "mprphStand";
         }
-        else if (runTime < 15.0) {
+        else if (runTime < 25.0) {
             /*Update Animation*/
             animate.setImage("sitting");
             if(!curImg.equals("sitting")) {
@@ -232,13 +232,18 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
             
             /*Set JFrame size to be proper*/
             aniFrame.setSize(animate.getPreferredSize().width, animate.getPreferredSize().height);
-            aniFrame.setLocation(15,screenSize.height - 75);
+            try {
+                aniFrame.setLocation(15,screenSize.height - 75 - animate.img.getHeight(null));
+            }
+            catch (NullPointerException error) {
+                System.out.println("ERROR - Image size not found");
+            }
             
             /*Update State value*/
             stateVal = 8; 
             curImg = "sitting";
         }
-        else if (runTime < 25.0) { //State of character is Anger
+        else if (runTime < 25.5) { //State of character is Anger
             animate.setImage("blackMorph");
             if(!curImg.equals("blackMorph")) {
                 animate.setAnimationSpeed(1);
@@ -251,7 +256,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
             stateVal = 10;
             curImg = "blackMorph";
         }
-        else if (runTime < 25.5 && stateVal == 10) {
+        else if (runTime < 45.0 && stateVal == 10) {
             animate.stop();
             setBlackScreen();
             stateVal = 11;

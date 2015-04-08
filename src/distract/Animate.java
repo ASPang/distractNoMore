@@ -35,10 +35,9 @@ import java.util.HashMap;
 public class Animate extends Component implements ActionListener {
     private HashMap imageMap;  //Stores all the image names as the key
     //private Image[] img;   //List of images
-    private Image[] expression;    //List of all the image expressions
     
     private String activeImg = "";  //Name of the current active image
-    private BufferedImage img;
+    public BufferedImage img;
 
     private int curImgNum = 1;    //Current image 
     private int show = 1;   //Default to show the image   
@@ -113,10 +112,6 @@ public class Animate extends Component implements ActionListener {
         } catch (IOException error) { 
             System.out.println("ERROR - path incorrect: " + path + " " + error);
         }
-    }
-    
-    public void workAnimate() {
-        
     }
     
     /**

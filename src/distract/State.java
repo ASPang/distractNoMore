@@ -285,7 +285,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
         /*Determine appropriate action*/
         if (numClick < 3) { //Display Program report
             //showCurReport;            
-            curReport.setVisible(true);
+            //curReport.setVisible(true);
         }
         
         numClick += 1;  //Increment mouse click counter

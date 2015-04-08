@@ -264,7 +264,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
         else if (stateVal == 11) {
             showBlackScreen();
         }
-        else {  //Reset
+        else if (runTime > 60.0) {  //Reset
             stateVal = 0;
             report.resetStartTime();
         }

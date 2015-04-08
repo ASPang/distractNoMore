@@ -18,7 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.Timer;
-//import javax.swing.JPanel;
+import javax.swing.JPanel;
 
 /*IO Stream*/
 import java.io.File;
@@ -37,7 +37,7 @@ public class Animate extends Component implements ActionListener {
     //private Image[] img;   //List of images
     private Image[] expression;    //List of all the image expressions
     
-    private String activeImg;  //Name of the current active image
+    private String activeImg = "";  //Name of the current active image
     private BufferedImage img;
 
     private int curImgNum = 1;    //Current image 
@@ -102,15 +102,21 @@ public class Animate extends Component implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        try {
-            String path = System.getProperty("user.dir") + "\\src\\distract\\img\\" + activeImg + curImgNum + ".png";
+        String path = System.getProperty("user.dir") + "\\src\\distract\\img\\" + activeImg + curImgNum + ".png";
+        try {            
             File file = new File(path);
             img = ImageIO.read(file);
             
             /*Increment to the next image*/
             nextImage();
             repaint();
-        } catch (IOException error) {        }
+        } catch (IOException error) { 
+            System.out.println("ERROR - path incorrect: " + path + " " + error);
+        }
+    }
+    
+    public void workAnimate() {
+        
     }
     
     /**
@@ -137,7 +143,12 @@ public class Animate extends Component implements ActionListener {
      */
     @Override
     public void paint(Graphics graphic) {
-        graphic.drawImage(img, 0, 0, null);
+        //System.out.println("");        
+        //this.img.getRaster();
+        //super.paint(graphic);
+        if (img != null) {
+           graphic.drawImage(img, 0, 0, img.getWidth(null), img.getHeight(null), null);
+        }
     }
     
     /**
@@ -148,7 +159,7 @@ public class Animate extends Component implements ActionListener {
     @Override
     public Dimension getPreferredSize() {
         if (img == null) {
-             return new Dimension(100,100);
+           return new Dimension(500,500);
         } else {
            return new Dimension(img.getWidth(null), img.getHeight(null));
        }
@@ -259,11 +270,10 @@ public class Animate extends Component implements ActionListener {
      * @param img   Name of the image that the program is to displayed.
      */
     public void setImage(String img) {
-        activeImg = img;
-        
         if (!activeImg.equals(img)) {
             curImgNum = 1;
         }
+        activeImg = img;
     }
     
     /**

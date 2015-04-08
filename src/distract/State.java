@@ -47,6 +47,7 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
     /*State value*/
     private int stateVal = 0;   //Default State is 0
     private int numClick = 0;  //Records the number of clicks made on the program
+    private String curImg = "";
     
     /**
      * Class constructor. 
@@ -112,21 +113,24 @@ public class State extends JFrame implements ActionListener, MouseListener, Mous
         
         /*Determine run time and convert it to minutes*/
         runTime = (float)(report.getRunTime())/min;
-        System.out.println("Converted runtime " + runTime);
+        //System.out.println("Converted runtime " + runTime);   //TESTING@!!!!
         /*Determine state based on run time*/
         if (runTime < 5.0) { //State of character is content
             animate.setImage("circle");
             animate.setAnimationSpeed(50);
             stateVal = 0;
+            curImg = "circle";
         }
-        else {  //State of the character is extreme anger and lock down
+        else  {  //State of the character is extreme anger and lock down
             /*Update Animation*/
-            animate.setImage("circle");
-            
+            animate.setImage("sitting");
+            animate.setAnimationSpeed(10);
+            aniFrame.setSize(animate.getPreferredSize().width, animate.getPreferredSize().height);
             /*Black out screen*/
             
             /*Update State value*/
             stateVal = 10; 
+            curImg = "sitting";
         }
     }
     

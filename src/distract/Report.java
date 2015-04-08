@@ -113,7 +113,7 @@ public class Report implements ActionListener {
         
         /*Determine the OS*/
         getOS();
-        System.out.println(getOS());
+        //System.out.println(getOS());  //TESTING!!!!
         
         /*Determine the programs running*/
         getRunTime();
@@ -154,7 +154,7 @@ public class Report implements ActionListener {
                 writeBuf.newLine();
                 writeBuf.close();
 
-                System.out.println("Done " + line);
+                //System.out.println("Done " + line);
             } else {
                 System.out.println("ERROR - Could not create Distract Report File at: " + path);
             }

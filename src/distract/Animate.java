@@ -18,7 +18,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.Timer;
-import javax.swing.JPanel;
 
 /*IO Stream*/
 import java.io.File;
@@ -27,13 +26,14 @@ import javax.imageio.ImageIO;
 
 /*Data storage*/
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Angela
  */
 public class Animate extends Component implements ActionListener {
-    private HashMap imageMap;  //Stores all the image names as the key
+    private  Map<String,Integer> imageMap;  //Stores all the image names as the key
     //private Image[] img;   //List of images
     
     private String activeImg = "";  //Name of the current active image
@@ -101,7 +101,17 @@ public class Animate extends Component implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        String path = System.getProperty("user.dir") + "\\src\\distract\\img\\" + activeImg + curImgNum + ".png";
+        String path = "";   //System.getProperty("user.dir") + "\\src\\distract\\img\\" + activeImg + curImgNum + ".png";
+        
+        /*Modify path separators if it's windows*/
+        Report report = new Report();
+        if (report.getOS().charAt(0) == 'W' || report.getOS().charAt(0) == 'w') {
+            path = ".\\src\\distract\\img\\" + activeImg + curImgNum + ".png";
+        }
+        else {
+            path = "./src/distract/img/" + activeImg + curImgNum + ".png";
+        }
+        
         try {            
             File file = new File(path);
             img = ImageIO.read(file);
@@ -121,7 +131,7 @@ public class Animate extends Component implements ActionListener {
         /*Get the last number in the image sequence*/
         int lastImg;
         try {
-            lastImg = (int)imageMap.get(activeImg);
+            lastImg = imageMap.get(activeImg);
         }
         catch (NullPointerException error) {
             lastImg = 0;
@@ -170,11 +180,21 @@ public class Animate extends Component implements ActionListener {
         
         String oldImage = "";   //Stores the previous file name found in the directory
         String imgName = "";   //Image file  name that was in the directory
-        String dir = System.getProperty("user.dir") + "\\src\\distract\\img\\"; //Directory of the images
+        //String dir = System.getProperty("user.dir") + "\\src\\distract\\img\\"; //Directory of the images
+        String dir = "";    //System.getProperty("user.dir") + "//src//distract//img//"; //Directory of the images
+        
+        /*Modify path separators if it's windows*/
+        Report report = new Report();
+        if (report.getOS().charAt(0) == 'W' || report.getOS().charAt(0) == 'w') {
+            dir = ".\\src\\distract\\img\\";
+        }
+        else {
+            dir = "./src/distract/img/";
+        }
         
         File folder = new File(dir);
         File[] listOfFiles = folder.listFiles();
-        
+                
         /*Go through every file in the folder*/
         for (int i = 0; i < listOfFiles.length; i++) {
           if (listOfFiles[i].isFile()) {            

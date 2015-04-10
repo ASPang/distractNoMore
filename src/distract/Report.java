@@ -6,6 +6,7 @@
  * Date Modified: 2015/04/01
  *
  */
+
 package distract;
 
 import java.awt.event.ActionEvent;
@@ -15,16 +16,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-//import java.lang.management.*;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Timer;
 
-/**
- *
- * @author Angela
- */
 public class Report implements ActionListener {
     private Timer timer;
     
@@ -72,9 +69,17 @@ public class Report implements ActionListener {
      */
     private int checkFileExist() {
         String fName = reportName;
-        String path = System.getProperty("user.dir") + "\\src\\distract\\report\\" + fName; //Directory of the images
+        String path = "";   //System.getProperty("user.dir") + "\\src\\distract\\report\\" + fName; //Directory of the images
         File file;
         FileOutputStream openFile;
+        
+        /*Modify path separators if it's windows*/
+        if (getOS().charAt(0) == 'W' || getOS().charAt(0) == 'w') {
+            path = ".\\src\\distract\\report\\" + fName;
+        }
+        else {
+            path = "./src/distract/report/" + fName;
+        }
         
         try {
             /*Create file object*/
@@ -132,13 +137,21 @@ public class Report implements ActionListener {
      */
     private void writeToFile(String timeStamp, String[] programs) {
         String fName = reportName;
-        String path = System.getProperty("user.dir") + "\\src\\distract\\report\\" + fName; //Directory of the images
+        String path = ""; //Directory of the images
         String line = "";
         
         File file;
         FileWriter openFile;
         BufferedWriter writeBuf;
-
+        
+        /*Modify path separators if it's windows*/
+        if (getOS().charAt(0) == 'W' || getOS().charAt(0) == 'w') {
+            path = ".\\src\\distract\\report\\" + fName;
+        }
+        else {
+            path = "./src/distract/report/" + fName;
+        }
+        
         /*Open file*/
         try {
             /*Determine if log file still exists*/
@@ -205,7 +218,7 @@ public class Report implements ActionListener {
      * 
      * @return osName   Name of the operating system
      */
-    private String getOS() {
+    public String getOS() {
         /*Get the OS name*/
         String osName = System.getProperty("os.name");
         
